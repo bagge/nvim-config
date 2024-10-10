@@ -21,10 +21,3 @@ vim.cmd[[imap jj <Esc>]]
 -- Leader key
 vim.keymap.set('n', '<Space>', '', {})
 vim.g.mapleader = " "
-
-options = { noremap = true }
-
-vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<cr>', options)
-vim.keymap.set('n', '<leader>tf', ':NvimTreeFindFile<cr>', options)
-vim.keymap.set('n', '<leader>b', ':FzfLua buffers<cr>', options)
-vim.keymap.set('n', '<leader>f', ':FzfLua files<cr>', options)
