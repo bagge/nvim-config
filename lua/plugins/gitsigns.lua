@@ -1,6 +1,14 @@
 return {
   "lewis6991/gitsigns.nvim",
-  opts = {},
+  lazy = false,
+  opts = {
+    current_line_blame = true,
+  },
+  keys = {
+    { '<leader>gb', ':Gitsigns toggle_current_line_blame<CR>',
+        desc = "Toggle current line blame", noremap = true
+    },
+  },
 }
 
 -- Default configuration:
