@@ -36,6 +36,7 @@ return {
       close_if_last_window = true,
       window = {
         width = 35,
+        position = "right",
         mappings = {
           ["<cr>"] = "open_with_window_picker",
         },
