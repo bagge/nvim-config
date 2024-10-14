@@ -1,3 +1,12 @@
+format_mode = function ()
+  local mode = require("lualine.utils.mode")
+  if vim.g.active_hydra ~= nil then
+    return "⬤ " .. vim.g.active_hydra .. " (" .. mode.get_mode():sub(1, 1) .. ")"
+  else
+    return mode.get_mode()
+  end
+end
+
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -10,8 +19,8 @@ return {
       disabled_filetypes = { "neo-tree" },
     },
     sections = {
-      lualine_a = { { "mode", separator = { left = "" , right = "" }, right_padding = 2 } },
-      lualine_b = { "filename", "branch", "diff", "diagnostics" },
+      lualine_a = { { "mode", fmt = format_mode, separator = { left = "" , right = "" }, right_padding = 2 } },
+      lualine_b = { {"filename", path = 1 }, "branch", "diff", "diagnostics" },
       lualine_c = {
         "%=", --[[ add your center compoentnts here in place of this comment ]]
       },
@@ -22,7 +31,7 @@ return {
       },
     },
     inactive_sections = {
-      lualine_a = { "filename" },
+      lualine_a = { {"filename", path = 1 } },
       lualine_b = {},
       lualine_c = {},
       lualine_x = {},
