@@ -87,8 +87,13 @@ end
 
 return {
     "nvimtools/hydra.nvim",
+    lazy = true,
     config = function()
       require("hydra").setup({})
       create_hydras()
-    end
+    end,
+    -- Use the same keys as the body of the hydra
+    keys = {
+      { "<leader>h", ":lua require('hydra').enter('Git hunks')<cr>", desc = "Git hunks" },
+    },
 }
