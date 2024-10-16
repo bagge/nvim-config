@@ -5,6 +5,10 @@ vim.api.nvim_create_autocmd({"ColorScheme"}, {
     })
 vim.cmd[[match ExtraWhitespace /\s\+$/]]
 vim.cmd[[syntax on]]
+
+-- Disable startup message.
+vim.opt.shortmess:append { s = true, I = true }
+
 -- Line numbers
 vim.opt.number = true
 
