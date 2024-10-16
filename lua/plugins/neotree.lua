@@ -2,7 +2,8 @@ return {
   {
     "s1n7ax/nvim-window-picker",
     name = "window-picker",
-    event = "VeryLazy",
+    lazy = true,
+    -- event = "VeryLazy",
     opts = {
       filter_rules = {
         include_current_win = false,
@@ -19,7 +20,7 @@ return {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
-    lazy = false,
+    lazy = true,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
