@@ -1,6 +1,7 @@
 return {
   "lewis6991/gitsigns.nvim",
-  lazy = false,
+  lazy = true,
+  event = { "BufReadPre", "BufNewFile" },
   opts = {
     current_line_blame = true,
   },

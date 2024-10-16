@@ -88,6 +88,9 @@ end
 return {
     "nvimtools/hydra.nvim",
     lazy = true,
+    dependencies = {
+      "lewis6991/gitsigns.nvim",
+    },
     config = function()
       require("hydra").setup({})
       create_hydras()
