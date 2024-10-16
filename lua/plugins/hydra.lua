@@ -22,6 +22,13 @@ restore_highlight_func = function()
   end
 end
 
+reset_hunk = function()
+  vim.bo.modifiable = true
+  local gitsigns = require('gitsigns')
+  gitsigns.reset_hunk()
+  vim.bo.modifiable = false
+end
+
 create_hydras = function()
   local Hydra = require("hydra")
 
@@ -67,7 +74,7 @@ create_hydras = function()
     heads = {
       { "n", ":Gitsigns next_hunk<cr>", { desc = "Next hunk" } },
       { "p", ":Gitsigns prev_hunk<cr>", { desc = "Previous hunk" } },
-      { "R", ":Gitsigns reset_hunk<cr>", { desc = "Reset hunk" } },
+      { "R", reset_hunk, { desc = "Reset hunk" } },
       { "s", ":Gitsigns stage_hunk<cr>", { desc = "Stage hunk" } },
       { "u", ":Gitsigns undo_stage_hunk<cr>", { desc = "Undo stage hunk" } },
       { "P", ":Gitsigns preview_hunk<cr>", { desc = "Preview hunk" } },
