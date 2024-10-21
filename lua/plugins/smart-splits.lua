@@ -6,6 +6,9 @@ return {
   "mrjones2014/smart-splits.nvim",
   lazy = false,
   build = "./kitty/install-kittens.bash",
+  opts = {
+    at_edge = "stop",
+  },
   keys = {
     { "<A-h>", ":SmartResizeLeft<cr>", desc = "Resize left", noremap = true },
     { "<A-j>", ":SmartResizeDown<cr>", desc = "Resize down", noremap = true },
