@@ -1,7 +1,7 @@
 return {
   "kevinhwang91/nvim-bqf",
   lazy = true,
-  event = "QuickFixCmdPre",
+  ft = "qf",
   dependencies = {
     "junegunn/fzf",
     "nvim-treesitter/nvim-treesitter",
