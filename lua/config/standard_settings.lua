@@ -22,6 +22,9 @@ vim.opt.colorcolumn = "80"
 vim.cmd[[highlight ColorColumn guibg=#222222]]
 vim.cmd[[imap jj <Esc>]]
 
+vim.opt.grepprg = "rg --vimgrep"
+vim.opt.grepformat = "%f:%l:%c:%m"
+
 -- Global to store the name of the active hydra. Used to not have to require
 -- hydra in lualine.lua
 vim.g.active_hydra = nil
