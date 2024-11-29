@@ -40,6 +40,7 @@ return {
           },
         },
       },
+      ansiblels = {},
     },
     setup = {
       gopls = function(_, opts)
@@ -69,6 +70,7 @@ return {
     local lspconfig = require("lspconfig")
     lspconfig.gopls.setup({})
     lspconfig.lua_ls.setup({})
+    lspconfig.ansiblels.setup({})
   end,
   dependencies = {
     "williamboman/mason.nvim",
