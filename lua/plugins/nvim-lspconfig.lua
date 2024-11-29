@@ -74,13 +74,23 @@ return {
     },
   },
   config = function()
+    -- TODO: mason has no ensure_installed so find a way to get goimports and
+    --       gofumpt installed
     require("mason").setup()
-    require("mason-lspconfig").setup()
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "gopls",
+        "lua_ls",
+        "ansiblels",
+        "bzl"
+      }
+    })
 
     local lspconfig = require("lspconfig")
     lspconfig.gopls.setup({})
     lspconfig.lua_ls.setup({})
     lspconfig.ansiblels.setup({})
+    lspconfig.bzl.setup({})
   end,
   dependencies = {
     "williamboman/mason.nvim",
