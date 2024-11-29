@@ -14,7 +14,8 @@ return {
     lazy = true,
     opts = {
       ensure_installed = {
-        "gopls"
+        "gopls",
+        "lua_ls"
       }
     },
     dependencies = {
