@@ -46,7 +46,7 @@ return {
       gopls = function(_, opts)
         -- workaround for gopls not supporting semanticTokensProvider
         -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
-        LazyVim.lsp.on_attach(function(client, _)
+        local on_attach = function(client, _)
           if not client.server_capabilities.semanticTokensProvider then
             local semantic = client.config.capabilities.textDocument.semanticTokens
             client.server_capabilities.semanticTokensProvider = {
@@ -58,8 +58,18 @@ return {
               range = true,
             }
           end
-        end, "gopls")
+        end
+        local name = "gopls"
         -- end workaround
+        vim.api.nvim_create_autocmd("LspAttach", {
+          callback = function(args)
+            local buffer = args.buf ---@type number
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if client and (not name or client.name == name) then
+              return on_attach(client, buffer)
+            end
+          end,
+        })
       end,
     },
   },
