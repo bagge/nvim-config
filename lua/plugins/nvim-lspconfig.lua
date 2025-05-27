@@ -75,20 +75,30 @@ return {
   },
   config = function()
     require("mason").setup()
-    require("mason-lspconfig").setup({
-      ensure_installed = {
-        "gopls",
-        "lua_ls",
-        "ansiblels",
-        "bzl",
-        "bashls",
-        "efm"
-      }
-    })
+    -- Don't use mason-lspconfig to ensure specific servers are installed
+    -- see https://vi.stackexchange.com/questions/46856/neovim-duplicate-lsp-clients-attached-to-the-buffer
+    --  require("mason-lspconfig").setup({
+    --    ensure_installed = {
+    --      "gopls",
+    --      "lua_ls",
+    --      "ansiblels",
+    --      "bzl",
+    --      "bashls",
+    --      "efm"
+    --    }
+    --  })
 
     local lspconfig = require("lspconfig")
     lspconfig.gopls.setup({})
-    lspconfig.lua_ls.setup({})
+    lspconfig.lua_ls.setup({
+      settings = {
+          Lua = {
+              diagnostics = {
+                  globals = { "vim" }
+              }
+          }
+      }
+    })
     lspconfig.ansiblels.setup({})
     lspconfig.bzl.setup({})
     lspconfig.bashls.setup({})
