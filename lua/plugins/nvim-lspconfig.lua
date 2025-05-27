@@ -82,7 +82,9 @@ return {
         "gopls",
         "lua_ls",
         "ansiblels",
-        "bzl"
+        "bzl",
+        "bashls",
+        "efm"
       }
     })
 
@@ -91,6 +93,34 @@ return {
     lspconfig.lua_ls.setup({})
     lspconfig.ansiblels.setup({})
     lspconfig.bzl.setup({})
+    lspconfig.bashls.setup({})
+    -- Installations with mason: shellcheck, shfmt, stylua, gofumpt, goimports
+    -- TODO: Set up keybindings for vim.lsp.buf.format() and vim.diagnostic.setqflist()
+    lspconfig.efm.setup({
+      init_options = { documentFormatting = true },
+      filetypes = { "go", "lua", "sh", "zsh", "bash" },
+      settings = {
+        rootMarkers = { ".git/" },
+        languages = {
+          go = {
+            { formatCommand = "gofmt -s", formatStdin = true },
+            { formatCommand = "goimports", formatStdin = true },
+            { formatCommand = "gofumpt", formatStdin = true },
+          },
+          lua = {
+            { formatCommand = "stylua --config-path -", formatStdin = true },
+          },
+          sh = {
+            { formatCommand = "shfmt -i 2 -ci -bn -sr", formatStdin = true },
+            {
+              lintCommand = 'shellcheck -f gcc -x',
+              lintSource = 'shellcheck',
+              lintFormats= {'%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m' }
+            }
+          },
+        },
+      },
+    })
   end,
   dependencies = {
     "williamboman/mason.nvim",
