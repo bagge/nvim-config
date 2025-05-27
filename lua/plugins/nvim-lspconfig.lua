@@ -74,8 +74,6 @@ return {
     },
   },
   config = function()
-    -- TODO: mason has no ensure_installed so find a way to get goimports and
-    --       gofumpt installed
     require("mason").setup()
     require("mason-lspconfig").setup({
       ensure_installed = {
@@ -94,7 +92,6 @@ return {
     lspconfig.ansiblels.setup({})
     lspconfig.bzl.setup({})
     lspconfig.bashls.setup({})
-    -- Installations with mason: shellcheck, shfmt, stylua, gofumpt, goimports
     -- TODO: Set up keybindings for vim.lsp.buf.format() and vim.diagnostic.setqflist()
     lspconfig.efm.setup({
       init_options = { documentFormatting = true },
@@ -120,6 +117,16 @@ return {
           },
         },
       },
+    })
+    -- Set up diagnostic configuration
+    vim.diagnostic.config({
+      virtual_text = {
+        spacing = 4,
+      },
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+      severity_sort = true,
     })
   end,
   dependencies = {
