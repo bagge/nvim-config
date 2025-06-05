@@ -8,6 +8,7 @@ vim.lsp.enable('lua_ls')
 vim.lsp.enable('gopls')
 vim.lsp.enable('efm')
 vim.lsp.enable('starpls')
+vim.lsp.enable('yamlls')
 
 -- Set up diagnostic configuration
 vim.diagnostic.config({
