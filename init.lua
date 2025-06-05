@@ -9,6 +9,7 @@ vim.lsp.enable('gopls')
 vim.lsp.enable('efm')
 vim.lsp.enable('starpls')
 vim.lsp.enable('yamlls')
+vim.lsp.enable('pyright')
 
 -- Set up diagnostic configuration
 vim.diagnostic.config({
