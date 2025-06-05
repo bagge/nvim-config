@@ -1,6 +1,6 @@
 require("config.lazy")
 
-vim.cmd[[colorscheme dracula]]
+vim.cmd [[colorscheme dracula]]
 
 vim.lsp.enable('ansiblels')
 vim.lsp.enable('bashls')
@@ -18,7 +18,7 @@ vim.diagnostic.config({
   },
   virtual_lines = {
     current_line = true,
---    severity = { min = vim.diagnostic.severity.WARN },
+    -- severity = { min = vim.diagnostic.severity.WARN },
   },
   signs = true,
   underline = true,
@@ -26,4 +26,21 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-
+vim.keymap.set('n', '<leader>d',
+  function()
+    vim.diagnostic.setloclist()
+  end,
+  { desc = "Set diagnostics to location list" }
+)
+vim.keymap.set('n', '<leader>D',
+  function()
+    vim.diagnostic.setqflist()
+  end,
+  { desc = "Set diagnostics to location list" }
+)
+vim.keymap.set('n', '<leader>F',
+  function()
+    vim.lsp.buf.format()
+  end,
+  { desc = "Format buffer" }
+)
