@@ -7,7 +7,7 @@ vim.lsp.enable('bashls')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('gopls')
 vim.lsp.enable('efm')
-vim.lsp.enable('bzl')
+vim.lsp.enable('starpls')
 
 -- Set up diagnostic configuration
 vim.diagnostic.config({
