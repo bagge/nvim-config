@@ -6,7 +6,7 @@ local hint =  [[
 
 local patched_highlight_func = nil
 
-patch_highlight_func = function()
+Patch_highlight_func = function()
   if patched_highlight_func == nil then
     patched_highlight_func = require("lualine.highlight").get_mode_suffix
     require("lualine.highlight").get_mode_suffix = function()
@@ -15,7 +15,7 @@ patch_highlight_func = function()
   end
 end
 
-restore_highlight_func = function()
+Restore_highlight_func = function()
   if patched_highlight_func ~= nil then
     require("lualine.highlight").get_mode_suffix = patched_highlight_func
     patched_highlight_func = nil
@@ -29,7 +29,7 @@ Reset_hunk = function()
   -- vim.bo.modifiable = false
 end
 
-create_hydras = function()
+Create_hydras = function()
   local Hydra = require("hydra")
 
   Hydra({
@@ -52,7 +52,7 @@ create_hydras = function()
          vim.cmd 'silent! %foldopen!'
          -- vim.bo.modifiable = false
          vim.g.active_hydra = "Git"
-         patch_highlight_func()
+         Patch_highlight_func()
          local gitsigns = require('gitsigns')
          -- gitsigns.toggle_signs(true)
          gitsigns.toggle_linehl(true)
@@ -64,7 +64,7 @@ create_hydras = function()
          vim.api.nvim_win_set_cursor(0, cursor_pos)
          vim.cmd 'normal zv'
          vim.g.active_hydra = nil
-         restore_highlight_func()
+         Restore_highlight_func()
          local gitsigns = require('gitsigns')
          --gitsigns.toggle_signs(false)
          gitsigns.toggle_linehl(false)
@@ -93,7 +93,7 @@ return {
     },
     config = function()
       require("hydra").setup({})
-      create_hydras()
+      Create_hydras()
     end,
     -- Use the same keys as the body of the hydra
     keys = {

@@ -1,4 +1,4 @@
-silent_movement = function(direction)
+local silent_movement = function(direction)
   return vim.cmd("silent! SmartCursorMove" .. direction)
 end
 

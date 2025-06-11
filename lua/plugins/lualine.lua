@@ -1,4 +1,4 @@
-format_mode = function ()
+local format_mode = function ()
   local mode = require("lualine.utils.mode")
   if vim.g.active_hydra ~= nil then
     return "⬤ " .. vim.g.active_hydra .. " (" .. mode.get_mode():sub(1, 1) .. ")"
@@ -12,7 +12,7 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = {
     options = {
-      theme = auto,
+      theme = 'auto',
       component_separators = "",
       section_separators = { left = "", right = "" },
       ignore_focus = { "neo-tree" },

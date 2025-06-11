@@ -1,6 +1,6 @@
 return {
   "ibhagwan/fzf-lua",
-  lazy = True, -- Have it loaded to have the commands available
+  lazy = true, -- Have it loaded to have the commands available
   dependencies = { "nvim-tree/nvim-web-devicons" },
   keys = {
     { "<leader>b", ":FzfLua buffers<cr>", desc = "Fuzzy search buffers", noremap = true },
