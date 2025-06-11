@@ -38,6 +38,9 @@ return {
       bzl = {
         prepend_args = { "-mode", "fix" },
       },
+      stylua = {
+        prepend_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+      },
     },
   },
   init = function()
