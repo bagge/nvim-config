@@ -34,9 +34,9 @@ vim.keymap.set('n', '<leader>D',
   end,
   { desc = "Set diagnostics to location list" }
 )
-vim.keymap.set('n', '<leader>F',
-  function()
-    vim.lsp.buf.format()
-  end,
-  { desc = "Format buffer" }
-)
+--vim.keymap.set('n', '<leader>F',
+--  function()
+--    vim.lsp.buf.format()
+--  end,
+--  { desc = "Format buffer" }
+--)
