@@ -19,6 +19,7 @@ return {
   opts = {
     -- Define your formatters
     formatters_by_ft = {
+      bzl = { "buildifier" },
       lua = { "stylua" },
       python = { "isort", "black" },
       javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -33,6 +34,9 @@ return {
     formatters = {
       shfmt = {
         prepend_args = { "-i", "2" },
+      },
+      bzl = {
+        prepend_args = { "-mode", "fix" },
       },
     },
   },

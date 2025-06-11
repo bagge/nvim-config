@@ -10,7 +10,7 @@ return {
       bzl = {
         {
           lintSource = 'buildifier',
-          lintCommand = 'buildifier -warnings=-module-docstring -lint=warn -mode=check',
+          lintCommand = 'buildifier -warnings=-module-docstring,out-of-order-load,load -lint=warn -mode=check',
           lintFormats = { '%f:%l: %m' },
           lintStdin = true,
         }
