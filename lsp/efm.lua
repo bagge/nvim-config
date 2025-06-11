@@ -1,6 +1,6 @@
 return {
   cmd = { 'efm-langserver' },
-  --cmd = {"efm-langserver", "--logfile=/tmp/lsp/efm.log", "--loglevel=20"},
+  --cmd = {"efm-langserver", "--logfile=/tmp/lsp/efm.log", "--loglevel=5"},
   root_markers = { '.git' },
   filetypes = { "bzl" },
   single_file_support = true,
@@ -13,6 +13,7 @@ return {
           lintCommand = 'buildifier -warnings=-module-docstring,+load -lint=warn -mode=check',
           lintFormats = { '%f:%l: %m' },
           lintStdin = true,
+          lintAfterOpen = true,
         }
       },
     },
