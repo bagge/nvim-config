@@ -1,10 +1,10 @@
 -- Highlight for trailing white space
-vim.api.nvim_create_autocmd({"ColorScheme"}, {
-	  pattern = {"*"},
-	  command = "highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen",
-    })
-vim.cmd[[match ExtraWhitespace /\s\+$/]]
-vim.cmd[[syntax on]]
+vim.api.nvim_create_autocmd({ "ColorScheme" }, {
+  pattern = { "*" },
+  command = "highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen",
+})
+vim.cmd [[match ExtraWhitespace /\s\+$/]]
+vim.cmd [[syntax on]]
 
 -- Disable startup message.
 vim.opt.shortmess:append { s = true, I = true }
@@ -19,8 +19,8 @@ vim.opt.softtabstop = 0
 vim.opt.expandtab = true
 
 vim.opt.colorcolumn = "80"
-vim.cmd[[highlight ColorColumn guibg=#222222]]
-vim.cmd[[imap jj <Esc>]]
+vim.cmd [[highlight ColorColumn guibg=#222222]]
+vim.cmd [[imap jj <Esc>]]
 
 vim.opt.grepprg = "rg --vimgrep"
 vim.opt.grepformat = "%f:%l:%c:%m"

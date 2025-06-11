@@ -6,7 +6,7 @@ return {
     "nvim-tree/nvim-web-devicons",
   },
   keys = {
-    { "<leader>tt", ":NvimTreeToggle<cr>", desc = "Toggle Nvim-tree", noremap = true },
+    { "<leader>tt", ":NvimTreeToggle<cr>",   desc = "Toggle Nvim-tree",       noremap = true },
     { "<leader>tf", ":NvimTreeFindFile<cr>", desc = "Find file in Nvim-tree", noremap = true },
   },
   opts = {},

@@ -29,8 +29,8 @@ return {
       -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     },
     keys = {
-      { "<leader>tt", ":Neotree toggle<cr>", desc = "Toggle Neotree", noremap = true },
-      { "<leader>tf", ":Neotree reveal<cr>", desc = "Find file in Neotree", noremap = true },
+      { "<leader>tt", ":Neotree toggle<cr>",     desc = "Toggle Neotree",        noremap = true },
+      { "<leader>tf", ":Neotree reveal<cr>",     desc = "Find file in Neotree",  noremap = true },
       { "<leader>ts", ":Neotree git_status<cr>", desc = "Git status in Neotree", noremap = true },
     },
     opts = {

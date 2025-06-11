@@ -6,8 +6,11 @@ return {
     current_line_blame = true,
   },
   keys = {
-    { '<leader>gb', ':Gitsigns toggle_current_line_blame<CR>',
-        desc = "Toggle current line blame", noremap = true
+    {
+      '<leader>gb',
+      ':Gitsigns toggle_current_line_blame<CR>',
+      desc = "Toggle current line blame",
+      noremap = true
     },
   },
 }
@@ -69,13 +72,13 @@ return {
 --   ...
 --   on_attach = function(bufnr)
 --     local gitsigns = require('gitsigns')
--- 
+--
 --     local function map(mode, l, r, opts)
 --       opts = opts or {}
 --       opts.buffer = bufnr
 --       vim.keymap.set(mode, l, r, opts)
 --     end
--- 
+--
 --     -- Navigation
 --     map('n', ']c', function()
 --       if vim.wo.diff then
@@ -84,7 +87,7 @@ return {
 --         gitsigns.nav_hunk('next')
 --       end
 --     end)
--- 
+--
 --     map('n', '[c', function()
 --       if vim.wo.diff then
 --         vim.cmd.normal({'[c', bang = true})
@@ -92,7 +95,7 @@ return {
 --         gitsigns.nav_hunk('prev')
 --       end
 --     end)
--- 
+--
 --     -- Actions
 --     map('n', '<leader>hs', gitsigns.stage_hunk)
 --     map('n', '<leader>hr', gitsigns.reset_hunk)
@@ -107,7 +110,7 @@ return {
 --     map('n', '<leader>hd', gitsigns.diffthis)
 --     map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
 --     map('n', '<leader>td', gitsigns.toggle_deleted)
--- 
+--
 --     -- Text object
 --     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
 --   end

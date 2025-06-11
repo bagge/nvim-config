@@ -8,12 +8,12 @@ return {
     rootMarkers = { ".git/" },
     languages = {
       bzl = {
-          {
-            lintSource = 'buildifier',
-            lintCommand = 'buildifier -warnings=-module-docstring -lint=warn -mode=check',
-            lintFormats = {'%f:%l: %m'},
-            lintStdin = true,
-          }
+        {
+          lintSource = 'buildifier',
+          lintCommand = 'buildifier -warnings=-module-docstring -lint=warn -mode=check',
+          lintFormats = { '%f:%l: %m' },
+          lintStdin = true,
+        }
       },
     },
   },
