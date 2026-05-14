@@ -1,5 +1,7 @@
 return {
   "Mofiqul/dracula.nvim",
+  lazy = false,
+  priority = 1000,
   config = function()
     local colors = require("dracula.palette")
     require("dracula").setup({

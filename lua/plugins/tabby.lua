@@ -1,6 +1,9 @@
 return {
   "nanozuki/tabby.nvim",
-  lazy = true,
+  lazy = false,
+  dependencies = {
+    "Mofiqul/dracula.nvim",
+  },
   opts = {
     preset = "tab_only",
     lualine_theme = "auto",

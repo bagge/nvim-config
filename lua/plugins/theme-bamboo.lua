@@ -1,6 +1,5 @@
 return {
-  'ribru17/bamboo.nvim',
+  "ribru17/bamboo.nvim",
   lazy = true,
-  priority = 1000,
   config = true,
 }
