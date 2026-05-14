@@ -41,7 +41,6 @@ return {
         "isort",
         "prettier",
         "prettierd",
-        "buildifier",
         "tree-sitter-cli",
       },
       auto_update = false,
