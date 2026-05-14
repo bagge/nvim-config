@@ -20,7 +20,7 @@ vim.opt.expandtab = true
 
 vim.opt.colorcolumn = "80"
 vim.cmd [[highlight ColorColumn guibg=#222222]]
-vim.cmd [[imap jj <Esc>]]
+vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode" })
 
 vim.opt.grepprg = "rg --vimgrep"
 vim.opt.grepformat = "%f:%l:%c:%m"

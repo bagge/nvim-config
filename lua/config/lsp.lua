@@ -32,7 +32,7 @@ vim.keymap.set('n', '<leader>D',
   function()
     vim.diagnostic.setqflist()
   end,
-  { desc = "Set diagnostics to location list" }
+  { desc = "Set diagnostics to quickfix list" }
 )
 --vim.keymap.set('n', '<leader>F',
 --  function()

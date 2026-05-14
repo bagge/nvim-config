@@ -1,26 +1,33 @@
-return {
-  cmd = { 'ansible-language-server', '--stdio' },
-  settings = {
+local ansible_path = vim.env.ANSIBLE_LS_ANSIBLE_PATH or vim.fn.exepath('ansible')
+
+local settings = {
+  ansible = {
+    python = {
+      interpreterPath = 'python3',
+    },
     ansible = {
-      python = {
-        interpreterPath = 'python3',
-      },
-      ansible = {
-        useFullyQualifiedCollectionNames = true,
-        path = '/home/aszakaly/.local/pipx/venvs/ansible-lint/bin/ansible',
-      },
-      executionEnvironment = {
-        enabled = false,
-      },
-      validation = {
+      useFullyQualifiedCollectionNames = true,
+    },
+    executionEnvironment = {
+      enabled = false,
+    },
+    validation = {
+      enabled = true,
+      lint = {
         enabled = true,
-        lint = {
-          enabled = true,
-          path = 'ansible-lint',
-        },
+        path = 'ansible-lint',
       },
     },
   },
+}
+
+if ansible_path ~= '' then
+  settings.ansible.ansible.path = ansible_path
+end
+
+return {
+  cmd = { 'ansible-language-server', '--stdio' },
+  settings = settings,
   filetypes = { 'yaml.ansible' },
   root_markers = { 'ansible.cfg', '.ansible-lint' },
 }

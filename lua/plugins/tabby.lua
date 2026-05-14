@@ -46,9 +46,12 @@ return {
       "<leader>tr",
       function()
         local newname = vim.fn.input("Rename tab to: ")
-        vim.cmd("TabRename " .. newname)
+        if newname == "" then
+          return
+        end
+        vim.api.nvim_cmd({ cmd = "TabRename", args = { newname } }, {})
       end,
-      desc = "Close all other tabs",
+      desc = "Rename tab",
       noremap = true,
     },
     { "<leader>tn", ":tabn<CR>", desc = "Goto next tab", noremap = true },
