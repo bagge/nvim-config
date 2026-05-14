@@ -1,10 +1,12 @@
 local format_mode = function()
+  local hydra_name = require("config.hydra_state").get_active()
   local mode = require("lualine.utils.mode")
-  if vim.g.active_hydra ~= nil then
-    return "⬤ " .. vim.g.active_hydra .. " (" .. mode.get_mode():sub(1, 1) .. ")"
-  else
+
+  if hydra_name == nil then
     return mode.get_mode()
   end
+
+  return "⬤ " .. hydra_name .. " (" .. mode.get_mode():sub(1, 1) .. ")"
 end
 
 return {
@@ -12,17 +14,24 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = {
     options = {
-      theme = 'auto',
+      theme = "auto",
       component_separators = "",
       section_separators = { left = "", right = "" },
       ignore_focus = { "neo-tree" },
       disabled_filetypes = { "neo-tree" },
     },
     sections = {
-      lualine_a = { { "mode", fmt = format_mode, separator = { left = "", right = "" }, right_padding = 2 } },
+      lualine_a = {
+        {
+          "mode",
+          fmt = format_mode,
+          separator = { left = "", right = "" },
+          right_padding = 2,
+        },
+      },
       lualine_b = { { "filename", path = 1 }, "branch", "diff", "diagnostics" },
       lualine_c = {
-        "%=", --[[ add your center compoentnts here in place of this comment ]]
+        "%=",
       },
       lualine_x = { "encoding", "fileformat" },
       lualine_y = { "filetype", "progress" },

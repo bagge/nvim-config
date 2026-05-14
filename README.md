@@ -31,6 +31,3 @@ Neovim health checks. Formatting can be checked separately:
 ```sh
 make check-format
 ```
-
-TODO:
-- if opening a file in a git folder, always enable signcolmn
