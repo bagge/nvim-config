@@ -14,6 +14,9 @@ restored later.
 After restoring plugins, run `:MasonToolsInstall` to install the external LSP
 servers, formatters, and linters declared in the Mason tool list.
 
+Treesitter parser installation also requires the `tree-sitter` CLI, version
+`0.26.1` or newer, plus `tar`, `curl`, and a C compiler in `PATH`.
+
 ## Maintenance checks
 
 Run the local check suite before and after config changes:

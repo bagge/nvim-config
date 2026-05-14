@@ -42,6 +42,7 @@ return {
         "prettier",
         "prettierd",
         "buildifier",
+        "tree-sitter-cli",
       },
       auto_update = false,
       run_on_start = false,
