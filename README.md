@@ -58,11 +58,11 @@ Run the local check suite before and after config changes:
 make check
 ```
 
-The default suite checks Lua syntax, verifies headless startup, and runs focused
-Neovim health checks for lazy.nvim, LSP, and Treesitter.
+The default suite checks Lua syntax, verifies headless startup, runs focused
+Neovim health checks for lazy.nvim, LSP, and Treesitter, and verifies Lua
+formatting with StyLua.
 
-Formatting is checked separately because there is still older style debt in
-files not touched by every change:
+Formatting can also be checked on its own:
 
 ```sh
 make check-format

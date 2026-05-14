@@ -78,7 +78,7 @@ return {
               vim.o.filetype
             )
           end,
-        }
+        },
       },
     },
 

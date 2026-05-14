@@ -4,7 +4,7 @@ CHECK_HEALTH ?= lazy vim.lsp vim.treesitter
 
 .PHONY: check check-lua check-startup check-health check-format
 
-check: check-lua check-startup check-health
+check: check-lua check-startup check-health check-format
 
 check-lua:
 	$(NVIM) --headless -u NONE -i NONE -c "luafile scripts/check_lua_syntax.lua" -c qa

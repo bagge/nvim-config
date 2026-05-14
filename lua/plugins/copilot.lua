@@ -17,5 +17,5 @@ return {
       })
       vim.fn["copilot#OnFileType"]()
     end,
-  }
+  },
 }
