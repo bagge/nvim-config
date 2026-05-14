@@ -1,4 +1,15 @@
 Just whatever my current nvim-config happens to be...
 
+## Reproducing the plugin set
+
+This config uses lazy.nvim and commits `lazy-lock.json` so the plugin set can be
+restored later.
+
+- Run `:Lazy restore` after cloning or updating this config to install the
+  pinned plugin versions from `lazy-lock.json`.
+- Run `:Lazy update` only when intentionally refreshing plugin versions.
+- Review `lazy-lock.json` diffs together with config changes; those diffs are
+  the record of plugin version changes.
+
 TODO:
 - if opening a file in a git folder, always enable signcolmn
