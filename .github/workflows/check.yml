@@ -1,0 +1,33 @@
+name: Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential ripgrep
+
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: v0.12.2
+
+      - name: Restore plugins
+        run: nvim --headless "+Lazy! restore" +qa
+
+      - name: Install Mason tools
+        run: nvim --headless "+MasonToolsInstallSync" +qa
+
+      - name: Run checks
+        run: make check
