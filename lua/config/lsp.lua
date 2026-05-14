@@ -1,11 +1,13 @@
-vim.lsp.enable('ansiblels')
-vim.lsp.enable('bashls')
-vim.lsp.enable('lua_ls')
-vim.lsp.enable('gopls')
-vim.lsp.enable('efm')
-vim.lsp.enable('starpls')
-vim.lsp.enable('yamlls')
-vim.lsp.enable('pyright')
+vim.lsp.enable({
+  'ansiblels',
+  'bashls',
+  'lua_ls',
+  'gopls',
+  'efm',
+  'starpls',
+  'yamlls',
+  'pyright',
+})
 
 -- Set up diagnostic configuration
 vim.diagnostic.config({

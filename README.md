@@ -11,6 +11,9 @@ restored later.
 - Review `lazy-lock.json` diffs together with config changes; those diffs are
   the record of plugin version changes.
 
+After restoring plugins, run `:MasonToolsInstall` to install the external LSP
+servers, formatters, and linters declared in the Mason tool list.
+
 ## Maintenance checks
 
 Run the local check suite before and after config changes:
