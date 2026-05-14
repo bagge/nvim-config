@@ -9,9 +9,30 @@ local format_mode = function()
   return "⬤ " .. hydra_name .. " (" .. mode.get_mode():sub(1, 1) .. ")"
 end
 
+local use_git_hydra_replace_mode_highlight = function()
+  local highlight = require("lualine.highlight")
+
+  if highlight.git_hydra_original_get_mode_suffix ~= nil then
+    return
+  end
+
+  highlight.git_hydra_original_get_mode_suffix = highlight.get_mode_suffix
+  highlight.get_mode_suffix = function()
+    if require("config.hydra_state").get_active() == "Git" then
+      return "_replace"
+    end
+
+    return highlight.git_hydra_original_get_mode_suffix()
+  end
+end
+
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
+  config = function(_, opts)
+    use_git_hydra_replace_mode_highlight()
+    require("lualine").setup(opts)
+  end,
   opts = {
     options = {
       theme = "auto",
