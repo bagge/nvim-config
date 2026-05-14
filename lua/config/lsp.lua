@@ -14,10 +14,7 @@ vim.diagnostic.config({
   virtual_text = {
     spacing = 2,
   },
-  virtual_lines = {
-    current_line = true,
-    -- severity = { min = vim.diagnostic.severity.WARN },
-  },
+  virtual_lines = false,
   signs = true,
   underline = true,
   update_in_insert = false,
