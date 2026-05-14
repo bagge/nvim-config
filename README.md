@@ -11,5 +11,20 @@ restored later.
 - Review `lazy-lock.json` diffs together with config changes; those diffs are
   the record of plugin version changes.
 
+## Maintenance checks
+
+Run the local check suite before and after config changes:
+
+```sh
+make check
+```
+
+The default suite checks Lua syntax, verifies headless startup, and runs focused
+Neovim health checks. Formatting can be checked separately:
+
+```sh
+make check-format
+```
+
 TODO:
 - if opening a file in a git folder, always enable signcolmn
