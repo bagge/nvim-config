@@ -1,28 +1,58 @@
 local format_mode = function()
+  local hydra_name = require("config.hydra_state").get_active()
   local mode = require("lualine.utils.mode")
-  if vim.g.active_hydra ~= nil then
-    return "⬤ " .. vim.g.active_hydra .. " (" .. mode.get_mode():sub(1, 1) .. ")"
-  else
+
+  if hydra_name == nil then
     return mode.get_mode()
+  end
+
+  return "⬤ " .. hydra_name .. " (" .. mode.get_mode():sub(1, 1) .. ")"
+end
+
+local use_git_hydra_replace_mode_highlight = function()
+  local highlight = require("lualine.highlight")
+
+  if highlight.git_hydra_original_get_mode_suffix ~= nil then
+    return
+  end
+
+  highlight.git_hydra_original_get_mode_suffix = highlight.get_mode_suffix
+  highlight.get_mode_suffix = function()
+    if require("config.hydra_state").get_active() == "Git" then
+      return "_replace"
+    end
+
+    return highlight.git_hydra_original_get_mode_suffix()
   end
 end
 
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
+  config = function(_, opts)
+    use_git_hydra_replace_mode_highlight()
+    require("lualine").setup(opts)
+  end,
   opts = {
     options = {
-      theme = 'auto',
+      theme = "auto",
       component_separators = "",
       section_separators = { left = "", right = "" },
       ignore_focus = { "neo-tree" },
       disabled_filetypes = { "neo-tree" },
     },
     sections = {
-      lualine_a = { { "mode", fmt = format_mode, separator = { left = "", right = "" }, right_padding = 2 } },
+      lualine_a = {
+        {
+          "mode",
+          fmt = format_mode,
+          separator = { left = "", right = "" },
+          right_padding = 2,
+        },
+      },
       lualine_b = { { "filename", path = 1 }, "branch", "diff", "diagnostics" },
       lualine_c = {
-        "%=", --[[ add your center compoentnts here in place of this comment ]]
+        "%=",
       },
       lualine_x = { "encoding", "fileformat" },
       lualine_y = { "filetype", "progress" },

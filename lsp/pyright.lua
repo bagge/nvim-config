@@ -1,59 +1,64 @@
 local function set_python_path(path)
-  local clients = vim.lsp.get_clients {
+  local clients = vim.lsp.get_clients({
     bufnr = vim.api.nvim_get_current_buf(),
-    name = 'pyright',
-  }
+    name = "pyright",
+  })
   for _, client in ipairs(clients) do
-    if client.settings then
-      client.settings.python = vim.tbl_deep_extend('force', client.settings.python, { pythonPath = path })
-    else
-      client.config.settings = vim.tbl_deep_extend('force', client.config.settings, { python = { pythonPath = path } })
-    end
-    client.notify('workspace/didChangeConfiguration', { settings = nil })
+    client.config.settings = client.config.settings or {}
+    client.config.settings.python =
+      vim.tbl_deep_extend("force", client.config.settings.python or {}, { pythonPath = path })
+    client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
   end
 end
 
 return {
-  cmd = { 'pyright-langserver', '--stdio' },
-  filetypes = { 'python' },
+  cmd = { "pyright-langserver", "--stdio" },
+  filetypes = { "python" },
   root_markers = {
-    'pyproject.toml',
-    'setup.py',
-    'setup.cfg',
-    'requirements.txt',
-    'Pipfile',
-    'pyrightconfig.json',
-    '.git',
+    "pyproject.toml",
+    "setup.py",
+    "setup.cfg",
+    "requirements.txt",
+    "Pipfile",
+    "pyrightconfig.json",
+    ".git",
   },
   settings = {
     python = {
       analysis = {
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
-        diagnosticMode = 'openFilesOnly',
+        diagnosticMode = "openFilesOnly",
         reportIncompatibleMethodOverride = true,
-        stubPath = "./typings"
+        stubPath = "./typings",
       },
     },
   },
   on_attach = function(client, bufnr)
-    vim.api.nvim_buf_create_user_command(bufnr, 'LspPyrightOrganizeImports', function()
+    vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightOrganizeImports", function()
       client:exec_cmd({
-        command = 'pyright.organizeimports',
+        command = "pyright.organizeimports",
         arguments = { vim.uri_from_bufnr(bufnr) },
       })
     end, {
-      desc = 'Organize Imports',
+      desc = "Organize Imports",
     })
-    vim.api.nvim_buf_create_user_command(bufnr, 'LspPyrightSetPythonPath', set_python_path, {
-      desc = 'Reconfigure pyright with the provided python path',
+    vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightSetPythonPath", function(opts)
+      set_python_path(opts.args)
+    end, {
+      desc = "Reconfigure pyright with the provided python path",
       nargs = 1,
-      complete = 'file',
+      complete = "file",
     })
   end,
   on_init = function(client)
-    local path = client.workspace_folders[1].name
-    if vim.fn.filereadable(path .. "/.gitreview") and vim.fs.basename(path) == "zuul" then
+    local workspace_folders = client.workspace_folders
+    if not workspace_folders or not workspace_folders[1] then
+      return
+    end
+
+    local path = workspace_folders[1].name
+    if vim.fn.filereadable(path .. "/.gitreview") == 1 and vim.fs.basename(path) == "zuul" then
       client.config.settings.python.analysis = {
         diagnosticSeverityOverrides = {
           reportIncompatibleMethodOverride = false,

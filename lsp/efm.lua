@@ -1,7 +1,7 @@
 return {
-  cmd = { 'efm-langserver' },
+  cmd = { "efm-langserver" },
   --cmd = {"efm-langserver", "--logfile=/tmp/lsp/efm.log", "--loglevel=5"},
-  root_markers = { '.git' },
+  root_markers = { ".git" },
   filetypes = { "bzl" },
   single_file_support = true,
   settings = {
@@ -9,12 +9,12 @@ return {
     languages = {
       bzl = {
         {
-          lintSource = 'buildifier',
-          lintCommand = 'buildifier -warnings=-module-docstring,+load -lint=warn -mode=check',
-          lintFormats = { '%f:%l: %m' },
+          lintSource = "buildifier",
+          lintCommand = "buildifier -warnings=-module-docstring,+load -lint=warn -mode=check",
+          lintFormats = { "%f:%l: %m" },
           lintStdin = true,
           lintAfterOpen = true,
-        }
+        },
       },
     },
   },
