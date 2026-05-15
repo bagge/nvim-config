@@ -208,6 +208,7 @@ Some plugins are installed as dependencies rather than configured directly:
 | `<leader>tr` | Rename tab |
 | `<leader>tn` | Go to next tab |
 | `<leader>tp` | Go to previous tab |
+| `<leader>tj` | Start jump mode |
 | `<leader>tmp` | Move tab backward |
 | `<leader>tmn` | Move tab forward |
 
