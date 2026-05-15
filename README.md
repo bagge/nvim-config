@@ -104,6 +104,7 @@ Language-specific overrides live in `after/ftplugin/`.
 | `LuaSnip` | Snippet engine |
 | `friendly-snippets` | Snippet collection |
 | `conform.nvim` | Formatting |
+| `tiny-inline-diagnostic.nvim` | Inline diagnostic display |
 
 ### Languages
 
@@ -242,6 +243,7 @@ Inside the Git hunk Hydra:
 | Keybinding | Description |
 | ---------- | ----------- |
 | `<leader>d` | Send diagnostics to the location list |
+| `<leader>dt` | Toggle inline diagnostics |
 | `<leader>D` | Send diagnostics to the quickfix list |
 | `<leader>F` | Format current buffer |
 
