@@ -1,3 +1,9 @@
+local command = function(cmd, args)
+  return function()
+    vim.api.nvim_cmd({ cmd = cmd, args = args or {} }, {})
+  end
+end
+
 return {
   "nanozuki/tabby.nvim",
   lazy = false,
@@ -8,42 +14,58 @@ return {
     preset = "tab_only",
     lualine_theme = "auto",
     line = function(line)
-      local color = require("dracula.palette")
       local theme = {
         fill = "TabLineFill",
-        head = "TabLine",
+        head = "TabLineFill",
         current_tab = "TabLineSel",
         tab = "TabLine",
-        win = { fg = "#000000", bg = color.bg },
-        tail = "TabLine",
       }
+
+      local tab_is_modified = function(tab)
+        for _, win in ipairs(tab.wins().wins) do
+          if win.buf().is_changed() then
+            return true
+          end
+        end
+
+        return false
+      end
 
       return {
         {
-          { "  ", hl = theme.head },
-          " ",
+          { " tabs ", hl = theme.head },
         },
         line.tabs().foreach(function(tab)
           local hl = tab.is_current() and theme.current_tab or theme.tab
-          local sym = tab.is_current() and "" or "󰆣"
+          local icon = tab.is_current() and "" or "󰆣"
+          local modified = tab_is_modified(tab) and " ●" or ""
 
           return {
-            line.sep("", hl, theme.fill),
-            sym,
-            tab.number(),
+            line.sep("", hl, theme.fill),
+            icon,
+            tab.in_jump_mode() and tab.jump_key() or tab.number(),
             tab.name(),
-            line.sep("", hl, theme.fill),
+            modified,
+            line.sep("", hl, theme.fill),
             hl = hl,
             margin = " ",
           }
         end),
+        hl = theme.fill,
       }
     end,
   },
   keys = {
-    { "<leader>ta", ":$tabnew<CR>", desc = "Add tab", noremap = true },
-    { "<leader>tc", ":tabclose<CR>", desc = "Close tab", noremap = true },
-    { "<leader>to", ":tabonly<CR>", desc = "Close all other tabs", noremap = true },
+    {
+      "<leader>ta",
+      function()
+        vim.cmd("$tabnew")
+      end,
+      desc = "Add tab",
+      noremap = true,
+    },
+    { "<leader>tc", command("tabclose"), desc = "Close tab", noremap = true },
+    { "<leader>to", command("tabonly"), desc = "Close all other tabs", noremap = true },
     {
       "<leader>tr",
       function()
@@ -56,9 +78,10 @@ return {
       desc = "Rename tab",
       noremap = true,
     },
-    { "<leader>tn", ":tabn<CR>", desc = "Goto next tab", noremap = true },
-    { "<leader>tp", ":tabp<CR>", desc = "Goto previous tab", noremap = true },
-    { "<leader>tmp", ":-tabmove<CR>", desc = "Move tab backward", noremap = true },
-    { "<leader>tmn", ":+tabmove<CR>", desc = "Move tab forward", noremap = true },
+    { "<leader>tj", command("Tabby", { "jump_to_tab" }), desc = "Jump to tab", noremap = true },
+    { "<leader>tn", command("tabnext"), desc = "Goto next tab", noremap = true },
+    { "<leader>tp", command("tabprevious"), desc = "Goto previous tab", noremap = true },
+    { "<leader>tmp", command("tabmove", { "-" }), desc = "Move tab backward", noremap = true },
+    { "<leader>tmn", command("tabmove", { "+" }), desc = "Move tab forward", noremap = true },
   },
 }
