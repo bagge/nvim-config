@@ -12,6 +12,10 @@ and linters.
 - Git, required by the lazy.nvim bootstrap and plugin installs
 - `curl`, `tar`, a C compiler, and a working `tree-sitter` CLI for optional
   non-bundled Treesitter parser installation
+- ImageMagick for inline image rendering through `image.nvim`
+- Kitty or another terminal with Kitty graphics protocol support for inline
+  image display
+- `plantuml`, Java, and Graphviz for PlantUML diagram rendering
 - `rg`, used by `grepprg` and `fzf-lua`
 
 The first Neovim start bootstraps `lazy.nvim` automatically. External tools are
@@ -99,6 +103,8 @@ conventions:
   tags, and note search
 - Marksman as the Markdown LSP
 - `render-markdown.nvim` for readable in-editor Markdown
+- `image.nvim` for Kitty-protocol inline images
+- `diagram.nvim` for inline Mermaid and PlantUML diagrams
 - `fzf-lua` and `rg` for raw full-text retrieval
 
 The configured vault is `~/notes`. The config does not create it automatically.
@@ -137,6 +143,43 @@ created: {{date}}
 
 New titled notes use readable slugs such as
 `neovim-note-taking-setup.md`. Untitled notes fall back to a timestamp ID.
+
+Inline images render local Markdown image links:
+
+```markdown
+![Example](attachments/images/example.png)
+```
+
+Remote image downloading is disabled by default. Store note images under
+`attachments/images` or another local path relative to the Markdown file. For
+files inside the configured `~/notes` vault, inline image rendering also checks
+Obsidian-style vault paths and bare filenames in `~/notes/attachments/images`,
+so `![Example](example.png)` can resolve to an attachment there.
+
+Mermaid and PlantUML diagrams render from fenced code blocks:
+
+````markdown
+```mermaid
+flowchart LR
+  idea --> note
+```
+
+```plantuml
+@startuml
+Alice -> Bob: Hello
+@enduml
+```
+````
+
+Diagram rendering runs automatically on Markdown buffer entry and after edits
+settle. Use `<leader>ng` to toggle inline graphics for the current note-taking
+session, including both Markdown images and rendered diagrams. Use `<leader>np`
+with the cursor inside a diagram block to open the rendered diagram image in a
+preview tab; press `o` there to open the same image in the system viewer.
+Mermaid rendering uses `mmdc`, which is declared in the Mason tool list, plus
+the local Puppeteer config in
+[resources/mermaid-puppeteer.json](resources/mermaid-puppeteer.json) so
+Chromium starts with `--no-sandbox` when diagrams render.
 
 ## Plugins
 
@@ -178,6 +221,8 @@ Bazel/Starlark. Markdown notes are covered by Treesitter and Marksman.
 | ------ | ------- |
 | `obsidian.nvim` | Markdown vault workflow, backlinks, tags, daily notes, and templates |
 | `render-markdown.nvim` | In-editor Markdown rendering and Markdown completions |
+| `image.nvim` | Kitty-protocol inline images in Markdown |
+| `diagram.nvim` | Inline Mermaid and PlantUML diagram rendering |
 
 Obsidian's UI layer is disabled so render-markdown owns Markdown rendering,
 including checkboxes, list bullets, callouts, links, and anti-conceal behavior.
@@ -267,6 +312,8 @@ Some plugins are installed as dependencies rather than configured directly:
 | `<leader>nr` | Rename note |
 | `<leader>nT` | Insert note template |
 | `<leader>nf` | Follow note link |
+| `<leader>ng` | Toggle inline note graphics |
+| `<leader>np` | Preview diagram image under cursor |
 
 ### Windows
 

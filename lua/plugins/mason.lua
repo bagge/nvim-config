@@ -42,6 +42,7 @@ return {
         "isort",
         "prettier",
         "prettierd",
+        "mmdc",
       },
       auto_update = false,
       run_on_start = false,
