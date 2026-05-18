@@ -5,6 +5,7 @@ vim.lsp.enable({
   "gopls",
   "efm",
   "starpls",
+  "marksman",
   "yamlls",
   "pyright",
 })
