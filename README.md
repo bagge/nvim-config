@@ -295,8 +295,12 @@ Some plugins are installed as dependencies rather than configured directly:
 | `<leader>b` | Fuzzy search buffers |
 | `<leader>f` | Fuzzy search files |
 | `<leader>ll` | Live grep |
-| `<leader>lg` | Live grep with glob |
-| `<leader>lr` | Resume live grep |
+| `<leader>lg` | Grep to fuzzy finder |
+| `<leader>lr` | Resume search |
+| `<leader>lo` | Search history of opened files |
+| `<leader>lb` | Search lines in current buffer |
+| `<leader>lw` | Search for word under cursor |
+| `<leader>lW` | Search for whitespace delimited word under cursor |
 
 ### Notes
 
