@@ -45,6 +45,10 @@ The Mason tool list includes LSP servers, formatters, and linters. Neovim
 prepends Mason's `bin` directory to `PATH`, so tools installed by Mason are
 visible to LSP and formatting integrations.
 
+Vale's CLI is installed through Mason. `vale-ls` is installed through Mason only
+on systems with a new enough `glibc`; on Ubuntu 22.04, use a locally built
+`~/.cargo/bin/vale-ls` instead.
+
 Treesitter parser installation uses an existing `tree-sitter` CLI when one is
 available and passes `tree-sitter --version`. This config intentionally does not
 install `tree-sitter-cli` through Mason because Mason's prebuilt CLI can require
@@ -212,8 +216,8 @@ Chromium starts with `--no-sandbox` when diagrams render.
 | `nvim-treesitter` | Parser management and Treesitter queries |
 | `treesitter-parser-registry` | Parser registry used by current Treesitter setup |
 
-Configured language focus: Lua, Go, Python, Bash, YAML/Ansible, and
-Bazel/Starlark. Markdown notes are covered by Treesitter and Marksman.
+Configured language focus: Lua, Go, Python, Bash, YAML/Ansible,
+Bazel/Starlark, and prose via Marksman and Vale.
 
 ### Notes And Markdown
 

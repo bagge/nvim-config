@@ -6,6 +6,7 @@ vim.lsp.enable({
   "efm",
   "starpls",
   "marksman",
+  "vale_ls",
   "yamlls",
   "pyright",
 })
