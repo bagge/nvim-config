@@ -13,7 +13,7 @@ local function supports_mason_vale_ls()
   return major ~= nil and minor ~= nil and (major > 2 or (major == 2 and minor >= 39))
 end
 
-local cargo_vale_ls = vim.fn.expand("~/.cargo/bin/vale-ls")
+local cargo_vale_ls = vim.fn.expand("~/.local/bin/vale-ls")
 local cmd = supports_mason_vale_ls() and { "vale-ls" } or { cargo_vale_ls }
 
 return {
