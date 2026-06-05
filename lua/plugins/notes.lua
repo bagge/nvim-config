@@ -87,10 +87,6 @@ return {
       picker = {
         name = "fzf-lua",
       },
-      completion = {
-        nvim_cmp = false,
-        blink = true,
-      },
       ui = {
         enable = false,
       },
