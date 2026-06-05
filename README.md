@@ -389,6 +389,7 @@ Inside the Git hunk Hydra:
 | `<leader>dt` | Toggle inline diagnostics |
 | `<leader>D` | Send diagnostics to the quickfix list |
 | `<leader>F` | Format current buffer |
+| `<leader>vw` | Add word to Vale vocabulary |
 
 ## Layout
 

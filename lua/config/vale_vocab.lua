@@ -99,8 +99,24 @@ local function styles_path(config_path, lines)
       return value
     end
   end
+end
 
-  return vim.fs.joinpath(vim.fs.dirname(config_path), "styles")
+local function global_styles_path()
+  local config_path = global_vale_config()
+  if config_path == nil then
+    return vim.fs.joinpath(
+      env_or("XDG_DATA_HOME", vim.fn.expand("~/.local/share")),
+      "vale",
+      "styles"
+    )
+  end
+
+  local lines = read_lines(config_path)
+  if lines == nil then
+    return vim.fs.joinpath(vim.fs.dirname(config_path), "styles")
+  end
+
+  return styles_path(config_path, lines) or vim.fs.joinpath(vim.fs.dirname(config_path), "styles")
 end
 
 local function split_vocab(value)
@@ -121,6 +137,16 @@ local function contains(list, value)
     end
   end
   return false
+end
+
+local function ensure_styles_path(config_path, lines, path)
+  if styles_path(config_path, lines) ~= nil then
+    return lines
+  end
+
+  table.insert(lines, 1, "StylesPath = " .. path)
+  write_lines(config_path, lines)
+  return lines
 end
 
 local function ensure_vocab_enabled(config_path, lines)
@@ -223,19 +249,17 @@ function M.add_word()
       return
     end
 
-    local vocab_path = vim.fs.joinpath(
-      styles_path(config_path, config_lines),
-      "config",
-      "vocabularies",
-      VOCAB_NAME,
-      "accept.txt"
-    )
+    local target_styles_path = styles_path(config_path, config_lines) or global_styles_path()
+    config_lines = ensure_styles_path(config_path, config_lines, target_styles_path)
+
+    local vocab_path =
+      vim.fs.joinpath(target_styles_path, "config", "vocabularies", VOCAB_NAME, "accept.txt")
 
     ensure_vocab_enabled(config_path, config_lines)
     append_unique(vocab_path, entry)
     restart_vale_ls()
 
-    vim.notify("Added '" .. entry .. "' to Vale vocabulary")
+    vim.notify("Added '" .. entry .. "' to Vale vocabulary: " .. vocab_path)
   end)
 end
 
