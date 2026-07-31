@@ -75,6 +75,20 @@ return {
       { "<leader>nr", "<cmd>Obsidian rename<cr>", desc = "Rename note" },
       { "<leader>nT", "<cmd>Obsidian template<cr>", desc = "Insert note template" },
       { "<leader>nf", "<cmd>Obsidian follow_link<cr>", desc = "Follow note link" },
+      {
+        "<leader>nq",
+        function()
+          require("config.note_tasks").open_dashboard()
+        end,
+        desc = "Open task dashboard",
+      },
+      {
+        "<leader>nx",
+        function()
+          require("config.note_tasks").toggle_task_done()
+        end,
+        desc = "Complete or reopen task",
+      },
     },
     opts = {
       legacy_commands = false,

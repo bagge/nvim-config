@@ -126,9 +126,11 @@ cross-file references and completions. Keeping both is fine: Git gives history,
 and `.marksman.toml` makes the Markdown project root explicit.
 
 Daily notes use `~/notes/daily/YYYY-MM-DD.md` and look for a template at
-`~/notes/templates/daily.md`. A minimal daily template:
+`~/notes/templates/daily.md`. The recommended template captures tasks once. A
+Neovim-native index evaluates the fenced `tasks` queries and displays their
+results as virtual lines:
 
-```markdown
+````markdown
 ---
 tags: [daily]
 created: {{date}}
@@ -140,10 +142,51 @@ created: {{date}}
 
 -
 
-## Follow-ups
+## Captured today
 
-- [ ]
+- [ ]  ➕ {{date}}
+
+## Due or scheduled
+
+```tasks
+not done
+(scheduled before tomorrow) OR (due before tomorrow)
+path does not include templates
+sort by priority
+sort by due
 ```
+
+## All open tasks
+
+```tasks
+not done
+path does not include templates
+group by folder
+sort by due
+sort by created
+```
+
+## Tasks active on {{date}}
+
+```tasks
+created on or before {{date}}
+(not done) OR (done on or after {{date}})
+path does not include templates
+sort by created
+```
+````
+
+Keep each task in one source note. Use `➕ YYYY-MM-DD` for its creation date,
+`⏳ YYYY-MM-DD` for the day it is scheduled, `📅 YYYY-MM-DD` for a real
+deadline, and `✅ YYYY-MM-DD` for its completion date. The native evaluator
+supports the filters, Boolean expressions, grouping, sorting, and limits used
+by this template. It infers missing creation dates for tasks stored in dated
+daily notes.
+
+Use `<leader>nq` or `:NoteTasks` for an interactive dashboard. Within the
+dashboard, `<CR>` jumps to a task, `x` completes or reopens it, `s` schedules
+it, `d` sets its due date, `r` refreshes the vault index, and `q` closes the
+dashboard. `:NoteTasksRefresh` refreshes all inline results explicitly.
 
 New titled notes use readable slugs such as
 `neovim-note-taking-setup.md`. Untitled notes fall back to a timestamp ID.
@@ -227,6 +270,12 @@ Bazel/Starlark, and prose via Marksman and Vale.
 | `render-markdown.nvim` | In-editor Markdown rendering and Markdown completions |
 | `image.nvim` | Kitty-protocol inline images in Markdown |
 | `diagram.nvim` | Inline Mermaid and PlantUML diagram rendering |
+
+The native task layer under `lua/config/note_tasks/` indexes Markdown
+checkboxes without requiring the Obsidian desktop application. It evaluates
+the query subset used by the daily template, renders up to 30 matching tasks
+as virtual lines below each `tasks` fence, and provides the full interactive
+dashboard through `:NoteTasks`.
 
 Obsidian's UI layer is disabled so render-markdown owns Markdown rendering,
 including checkboxes, list bullets, callouts, links, and anti-conceal behavior.
@@ -320,6 +369,8 @@ Some plugins are installed as dependencies rather than configured directly:
 | `<leader>nr` | Rename note |
 | `<leader>nT` | Insert note template |
 | `<leader>nf` | Follow note link |
+| `<leader>nq` | Open the notes task dashboard |
+| `<leader>nx` | Complete or reopen task and maintain its completion date |
 | `<leader>ng` | Toggle inline note graphics |
 | `<leader>np` | Preview diagram image under cursor |
 

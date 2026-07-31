@@ -2,9 +2,9 @@ NVIM ?= nvim
 STYLUA ?= stylua
 CHECK_HEALTH ?= lazy vim.lsp vim.treesitter
 
-.PHONY: check check-lua check-startup check-health check-lualine-hydra check-format
+.PHONY: check check-lua check-startup check-health check-lualine-hydra check-note-tasks check-format
 
-check: check-lua check-startup check-health check-lualine-hydra check-format
+check: check-lua check-startup check-health check-lualine-hydra check-note-tasks check-format
 
 check-lua:
 	$(NVIM) --headless -u NONE -i NONE -c "luafile scripts/check_lua_syntax.lua" -c qa
@@ -17,6 +17,9 @@ check-health:
 
 check-lualine-hydra:
 	$(NVIM) --headless -i NONE -c "luafile scripts/check_lualine_hydra.lua" -c qa
+
+check-note-tasks:
+	$(NVIM) --headless -i NONE -c "luafile scripts/check_note_tasks.lua" -c qa
 
 check-format:
 	@if command -v "$(STYLUA)" >/dev/null 2>&1; then \
