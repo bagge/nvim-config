@@ -48,7 +48,7 @@ local function remove_metadata(body)
 end
 
 ---@param line string
----@param context? { path: string, relative_path: string, line: integer, inferred_created: string? }
+---@param context? { path: string, relative_path: string, line: integer }
 ---@return table?
 function M.parse_line(line, context)
   local prefix, state, body = parse_parts(line)
@@ -71,7 +71,6 @@ function M.parse_line(line, context)
     folder = ""
   end
 
-  local created = find_date(body, date_fields.created) or context.inferred_created
   local done_date = find_date(body, date_fields.done)
   local done = state == "x" or state == "X"
 
@@ -86,8 +85,7 @@ function M.parse_line(line, context)
     state = state,
     done = done,
     description = remove_metadata(body),
-    created = created,
-    created_inferred = created ~= nil and find_date(body, date_fields.created) == nil,
+    created = find_date(body, date_fields.created),
     scheduled = find_date(body, date_fields.scheduled),
     due = find_date(body, date_fields.due),
     done_date = done_date,

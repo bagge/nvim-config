@@ -63,6 +63,8 @@ return {
     ft = "markdown",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "ibhagwan/fzf-lua",
+      "s1n7ax/nvim-window-picker",
     },
     keys = {
       { "<leader>nn", "<cmd>Obsidian new<cr>", desc = "New note" },
@@ -75,6 +77,13 @@ return {
       { "<leader>nr", "<cmd>Obsidian rename<cr>", desc = "Rename note" },
       { "<leader>nT", "<cmd>Obsidian template<cr>", desc = "Insert note template" },
       { "<leader>nf", "<cmd>Obsidian follow_link<cr>", desc = "Follow note link" },
+      {
+        "<leader>na",
+        function()
+          require("config.note_tasks").new_task()
+        end,
+        desc = "Add task",
+      },
       {
         "<leader>nq",
         function()

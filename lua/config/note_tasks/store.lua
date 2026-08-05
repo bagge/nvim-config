@@ -54,21 +54,15 @@ local function read_lines(path)
   return ok and lines or {}
 end
 
-local function inferred_daily_date(relative_path)
-  return relative_path:match("^daily/(%d%d%d%d%-%d%d%-%d%d)%.md$")
-end
-
 local function scan()
   local tasks = {}
   for _, relative_path in ipairs(markdown_files()) do
     local path = vim.fs.joinpath(vault_path, relative_path)
-    local inferred_created = inferred_daily_date(relative_path)
     for line_number, line in ipairs(read_lines(path)) do
       local task = parser.parse_line(line, {
         path = path,
         relative_path = relative_path,
         line = line_number,
-        inferred_created = inferred_created,
       })
       if task then
         tasks[#tasks + 1] = task

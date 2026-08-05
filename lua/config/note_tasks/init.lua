@@ -11,6 +11,28 @@ function M.open_dashboard()
   dashboard.open()
 end
 
+function M.new_task()
+  if vim.bo.filetype ~= "markdown" then
+    vim.notify("New tasks can only be created in Markdown buffers", vim.log.levels.INFO)
+    return
+  end
+
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local current_line = vim.api.nvim_get_current_line()
+  local indent = current_line:match("^(%s*)") or ""
+  local task_line = indent .. "- [ ]  ➕ " .. os.date("%Y-%m-%d")
+
+  if current_line:match("^%s*$") then
+    vim.api.nvim_set_current_line(task_line)
+  else
+    vim.api.nvim_buf_set_lines(0, row, row, false, { task_line })
+    row = row + 1
+  end
+
+  vim.api.nvim_win_set_cursor(0, { row, #indent + #"- [ ] " })
+  vim.cmd("startinsert")
+end
+
 function M.toggle_task_done()
   local line = vim.api.nvim_get_current_line()
   local replacement, err = parser.toggle_done(line)
@@ -37,6 +59,9 @@ function M.setup()
 
   vim.api.nvim_create_user_command("NoteTasks", dashboard.open, {
     desc = "Open the notes task dashboard",
+  })
+  vim.api.nvim_create_user_command("NoteTaskNew", M.new_task, {
+    desc = "Insert a new task with today's created date",
   })
   vim.api.nvim_create_user_command("NoteTasksRefresh", M.refresh, {
     desc = "Refresh the notes task index and inline results",

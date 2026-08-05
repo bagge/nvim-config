@@ -5,7 +5,15 @@ local store = require("config.note_tasks.store")
 local M = {}
 
 local dashboard_name = "note-tasks://dashboard"
+local recent_task_limit = 10
 local row_tasks = {}
+local show_recently_completed = false
+local non_editing_filetypes = {
+  ["neo-tree"] = true,
+  ["neo-tree-popup"] = true,
+  notetasks = true,
+  notify = true,
+}
 
 local function current_task()
   return row_tasks[vim.api.nvim_win_get_cursor(0)[1]]
@@ -49,6 +57,58 @@ local function dashboard_buffer()
   return bufnr
 end
 
+local function dashboard_window(bufnr)
+  for _, winid in ipairs(vim.fn.win_findbuf(bufnr)) do
+    if vim.api.nvim_win_is_valid(winid) then
+      return winid
+    end
+  end
+end
+
+local function is_editing_window(winid)
+  if not vim.api.nvim_win_is_valid(winid) then
+    return false
+  end
+
+  local config = vim.api.nvim_win_get_config(winid)
+  if config.relative ~= "" then
+    return false
+  end
+
+  local bufnr = vim.api.nvim_win_get_buf(winid)
+  return vim.bo[bufnr].buftype == "" and not non_editing_filetypes[vim.bo[bufnr].filetype]
+end
+
+local function editing_window()
+  local current = vim.api.nvim_get_current_win()
+  local previous_number = vim.fn.winnr("#")
+  local previous = previous_number > 0 and vim.fn.win_getid(previous_number) or 0
+
+  local best
+  local best_bottom = -1
+  local best_preference = -1
+  local best_area = -1
+  for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if is_editing_window(winid) then
+      local position = vim.api.nvim_win_get_position(winid)
+      local bottom = position[1] + vim.api.nvim_win_get_height(winid)
+      local preference = winid == current and 2 or winid == previous and 1 or 0
+      local area = vim.api.nvim_win_get_width(winid) * vim.api.nvim_win_get_height(winid)
+      if
+        bottom > best_bottom
+        or (bottom == best_bottom and preference > best_preference)
+        or (bottom == best_bottom and preference == best_preference and area > best_area)
+      then
+        best = winid
+        best_bottom = bottom
+        best_preference = preference
+        best_area = area
+      end
+    end
+  end
+  return best
+end
+
 local function set_lines(bufnr, lines)
   vim.bo[bufnr].modifiable = true
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
@@ -56,30 +116,12 @@ local function set_lines(bufnr, lines)
   vim.bo[bufnr].modified = false
 end
 
-function M.refresh()
-  local bufnr = vim.api.nvim_get_current_buf()
-  if vim.api.nvim_buf_get_name(bufnr) ~= dashboard_name then
-    return
-  end
+local function append_task(lines, task)
+  lines[#lines + 1] = task_line(task)
+  row_tasks[#lines] = task
+end
 
-  local result = query.evaluate(store.tasks(), {
-    "not done",
-    "sort by priority",
-    "sort by due",
-    "sort by scheduled",
-    "sort by created",
-  })
-
-  local lines = {
-    "Note Tasks",
-    "",
-    ("%d open tasks · <CR> jump · x complete/reopen · s schedule · d due · r refresh · q close"):format(
-      result.total
-    ),
-    "",
-  }
-  row_tasks = {}
-
+local function append_open_tasks(lines, result)
   local grouped = {}
   for _, task in ipairs(result.tasks) do
     local name = task.folder ~= "" and task.folder or "(vault root)"
@@ -92,14 +134,63 @@ function M.refresh()
   for _, folder in ipairs(folders) do
     lines[#lines + 1] = folder
     for _, task in ipairs(grouped[folder]) do
-      lines[#lines + 1] = task_line(task)
-      row_tasks[#lines] = task
+      append_task(lines, task)
     end
     lines[#lines + 1] = ""
   end
 
   if result.total == 0 then
     lines[#lines + 1] = "No open tasks."
+    lines[#lines + 1] = ""
+  end
+end
+
+local function append_recently_completed(lines, tasks)
+  local result = query.evaluate(tasks, {
+    "done",
+    "sort by done reverse",
+    ("limit to %d tasks"):format(recent_task_limit),
+  })
+
+  lines[#lines + 1] = ("Recently completed (%d of %d)"):format(#result.tasks, result.total)
+  if result.total == 0 then
+    lines[#lines + 1] = "  No completed tasks."
+  else
+    for _, task in ipairs(result.tasks) do
+      append_task(lines, task)
+    end
+  end
+  lines[#lines + 1] = ""
+end
+
+function M.refresh()
+  local bufnr = vim.api.nvim_get_current_buf()
+  if vim.api.nvim_buf_get_name(bufnr) ~= dashboard_name then
+    return
+  end
+
+  local tasks = store.tasks()
+  local result = query.evaluate(tasks, {
+    "not done",
+    "sort by priority",
+    "sort by due",
+    "sort by scheduled",
+    "sort by created",
+  })
+
+  local lines = {
+    "Note Tasks",
+    "",
+    ("%d open tasks · <CR> open · x complete/reopen · s schedule · d due · c recent · r refresh · q close"):format(
+      result.total
+    ),
+    "",
+  }
+  row_tasks = {}
+
+  append_open_tasks(lines, result)
+  if show_recently_completed then
+    append_recently_completed(lines, tasks)
   end
 
   set_lines(bufnr, lines)
@@ -128,7 +219,25 @@ local function jump_to_current()
   if not task then
     return
   end
-  vim.cmd.edit(vim.fn.fnameescape(task.path))
+
+  local ok, picker = pcall(require, "window-picker")
+  if not ok then
+    vim.notify("window-picker is unavailable", vim.log.levels.ERROR)
+    return
+  end
+
+  local winid = picker.pick_window({})
+  if not winid then
+    return
+  end
+
+  vim.api.nvim_set_current_win(winid)
+  local opened, err = pcall(vim.cmd.edit, vim.fn.fnameescape(task.path))
+  if not opened then
+    vim.notify("Could not open task source: " .. tostring(err), vim.log.levels.ERROR)
+    return
+  end
+
   vim.api.nvim_win_set_cursor(0, { task.line, 0 })
   vim.cmd("normal! zz")
 end
@@ -162,7 +271,7 @@ local function set_keymaps(bufnr)
     "n",
     "<CR>",
     jump_to_current,
-    vim.tbl_extend("force", options, { desc = "Jump to task" })
+    vim.tbl_extend("force", options, { desc = "Open task with window picker" })
   )
   vim.keymap.set("n", "x", function()
     update_current(function(line)
@@ -175,6 +284,10 @@ local function set_keymaps(bufnr)
   vim.keymap.set("n", "d", function()
     prompt_for_date("due")
   end, vim.tbl_extend("force", options, { desc = "Set task due date" }))
+  vim.keymap.set("n", "c", function()
+    show_recently_completed = not show_recently_completed
+    M.refresh()
+  end, vim.tbl_extend("force", options, { desc = "Toggle recently completed tasks" }))
   vim.keymap.set("n", "r", function()
     store.invalidate()
     M.refresh()
@@ -189,8 +302,15 @@ end
 
 function M.open()
   local bufnr = dashboard_buffer()
-  if vim.api.nvim_get_current_buf() ~= bufnr then
-    vim.cmd("botright new")
+  local winid = dashboard_window(bufnr)
+  if winid then
+    vim.api.nvim_set_current_win(winid)
+  else
+    local target = editing_window()
+    if target then
+      vim.api.nvim_set_current_win(target)
+    end
+    vim.cmd("belowright new")
     vim.api.nvim_win_set_buf(0, bufnr)
   end
   set_keymaps(bufnr)

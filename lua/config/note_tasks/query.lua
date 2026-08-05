@@ -143,11 +143,19 @@ function M.evaluate(tasks, instructions, context)
   for _, original in ipairs(instructions) do
     local instruction = trim(original)
     if instruction ~= "" and instruction:sub(1, 1) ~= "#" then
-      local sort_name = instruction:match("^sort by%s+([%w ]+)$")
+      local sort_name = instruction:match("^sort by%s+(.+)$")
+      local sort_descending = false
+      if sort_name and sort_name:match("%s+reverse$") then
+        sort_name = sort_name:match("^(.-)%s+reverse$")
+        sort_descending = true
+      end
       local group_name = instruction:match("^group by%s+([%w ]+)$")
       local requested_limit = instruction:match("^limit to%s+(%d+)%s+tasks?$")
       if sort_name and sort_fields[sort_name] then
-        sorts[#sorts + 1] = sort_fields[sort_name]
+        sorts[#sorts + 1] = {
+          field = sort_fields[sort_name],
+          descending = sort_descending,
+        }
       elseif group_name == "folder" or group_name == "path" then
         group_by = group_name
       elseif requested_limit then
@@ -178,8 +186,8 @@ function M.evaluate(tasks, instructions, context)
   end
 
   table.sort(matched, function(left, right)
-    for _, field in ipairs(sorts) do
-      local comparison = compare_values(left[field], right[field], false)
+    for _, sort in ipairs(sorts) do
+      local comparison = compare_values(left[sort.field], right[sort.field], sort.descending)
       if comparison ~= nil then
         return comparison
       end

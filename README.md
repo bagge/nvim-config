@@ -180,13 +180,17 @@ Keep each task in one source note. Use `➕ YYYY-MM-DD` for its creation date,
 `⏳ YYYY-MM-DD` for the day it is scheduled, `📅 YYYY-MM-DD` for a real
 deadline, and `✅ YYYY-MM-DD` for its completion date. The native evaluator
 supports the filters, Boolean expressions, grouping, sorting, and limits used
-by this template. It infers missing creation dates for tasks stored in dated
-daily notes.
+by this template. Creation dates come only from explicit `➕ YYYY-MM-DD`
+metadata.
 
-Use `<leader>nq` or `:NoteTasks` for an interactive dashboard. Within the
-dashboard, `<CR>` jumps to a task, `x` completes or reopens it, `s` schedules
-it, `d` sets its due date, `r` refreshes the vault index, and `q` closes the
-dashboard. `:NoteTasksRefresh` refreshes all inline results explicitly.
+Use `<leader>na` or `:NoteTaskNew` to insert a new task with today's explicit
+`➕` date and enter insert mode at the description. Use `<leader>nq` or
+`:NoteTasks` for an interactive dashboard. Reopening the dashboard focuses its
+existing window. Within the dashboard, `<CR>` uses the window picker to open a
+task in an existing non-dashboard window, `x` completes or reopens it, `s`
+schedules it, `d` sets its due date, `c` toggles the ten most recently
+completed tasks, `r` refreshes the vault index, and `q` closes the dashboard.
+`:NoteTasksRefresh` refreshes all inline results explicitly.
 
 New titled notes use readable slugs such as
 `neovim-note-taking-setup.md`. Untitled notes fall back to a timestamp ID.
@@ -369,6 +373,7 @@ Some plugins are installed as dependencies rather than configured directly:
 | `<leader>nr` | Rename note |
 | `<leader>nT` | Insert note template |
 | `<leader>nf` | Follow note link |
+| `<leader>na` | Add a task with today's created date |
 | `<leader>nq` | Open the notes task dashboard |
 | `<leader>nx` | Complete or reopen task and maintain its completion date |
 | `<leader>ng` | Toggle inline note graphics |
