@@ -136,12 +136,12 @@ return {
       end,
       frontmatter = {
         func = function(note)
-          local out = {
-            id = note.id,
-            aliases = note.aliases,
-            tags = note.tags,
-            created = os.date("%Y-%m-%d"),
-          }
+          local out = vim.deepcopy(note.metadata or {})
+
+          out.id = note.id
+          out.aliases = note.aliases
+          out.tags = note.tags
+          out.created = out.created or os.date("%Y-%m-%d")
 
           if note.title then
             out.title = note.title
