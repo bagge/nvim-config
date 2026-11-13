@@ -3,11 +3,22 @@ local silent_movement = function(direction)
 end
 
 return {
-  "mrjones2014/smart-splits.nvim",
+  "smart-splits-nvim/smart-splits.nvim",
   lazy = false,
-  build = "./kitty/install-kittens.bash",
+  dependencies = {
+    {
+      "smart-splits-nvim/backend-kitty",
+      module = "smart-splits-backend-kitty",
+      build = "./kitten/install_relative_resize.lua",
+    },
+  },
   opts = {
-    at_edge = "stop",
+    move = {
+      at_edge = "stop",
+    },
+    mux = {
+      backend = "smart-splits-backend-kitty",
+    },
   },
   keys = {
     {
