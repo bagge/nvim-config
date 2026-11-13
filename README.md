@@ -306,6 +306,7 @@ lines, with list-aware continuation indentation and visual wrap indentation.
 | `nvim-bqf` | Better quickfix window |
 | `neo-tree.nvim` | File tree and Git status tree |
 | `smart-splits.nvim` | Window movement and resizing shared with Kitty |
+| `backend-kitty` | Kitty multiplexer backend for smart-splits.nvim |
 | `kitty-scrollback.nvim` | Kitty scrollback integration |
 
 ### UI And Editing
